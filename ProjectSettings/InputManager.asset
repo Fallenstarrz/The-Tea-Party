@@ -14,7 +14,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
     invert: 0
@@ -30,7 +30,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
     invert: 0
@@ -46,7 +46,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
     invert: 0
@@ -62,7 +62,7 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
     invert: 0
@@ -78,12 +78,12 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
-    invert: 0
+    invert: 1
     type: 2
-    axis: 0
+    axis: 1
     joyNum: 1
   - serializedVersion: 3
     m_Name: C2_Vertical
@@ -94,12 +94,12 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
-    invert: 0
+    invert: 1
     type: 2
-    axis: 0
+    axis: 1
     joyNum: 2
   - serializedVersion: 3
     m_Name: C3_Vertical
@@ -110,12 +110,12 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
-    invert: 0
+    invert: 1
     type: 2
-    axis: 0
+    axis: 1
     joyNum: 3
   - serializedVersion: 3
     m_Name: C4_Vertical
@@ -126,12 +126,12 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 3
-    dead: 0.001
+    dead: 0.3
     sensitivity: 3
     snap: 1
-    invert: 0
+    invert: 1
     type: 2
-    axis: 0
+    axis: 1
     joyNum: 4
   - serializedVersion: 3
     m_Name: C1_Dash

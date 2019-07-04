@@ -10,8 +10,8 @@ public class ThrowZone : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerPawn>().isCarryingPickup)
         {
-            // Think about delaying before we throw it
-            // Throw towards point
+            Destroy(other.gameObject.GetComponent<PlayerPawn>().pickupItem);
+            other.gameObject.GetComponent<PlayerPawn>().isCarryingPickup = false;
         }
     }
 }

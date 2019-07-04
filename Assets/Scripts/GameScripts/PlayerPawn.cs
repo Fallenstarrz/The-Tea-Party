@@ -16,14 +16,6 @@ public class PlayerPawn : MonoBehaviour
 
     public Transform carryPoint;
 
-    private float healthCurrent;
-    [SerializeField]
-    private float healthMax;
-    private float staminaCurrent;
-    [SerializeField]
-    private float staminaMax;
-    [SerializeField]
-    private float staminaRegen;
     private float attackTimerCurrent;
     [SerializeField]
     private float attackTimerMax;
@@ -33,9 +25,12 @@ public class PlayerPawn : MonoBehaviour
 
     public float timeBeforeRespawn;
     public float timeToStun;
-    public float timeToDash;
+    public float timeToDashCurrent;
+    public float timeToDashMax;
 
     public GameObject pickupItem;
+
+    private Vector2 directionToDash;
 
     [HideInInspector]
     public bool isStunned;
@@ -51,8 +46,6 @@ public class PlayerPawn : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        healthCurrent = healthMax;
-        staminaCurrent = staminaMax;
         attackTimerCurrent = 0;
         anim = GetComponent<Animator>();
         tf = GetComponent<Transform>();
@@ -64,6 +57,10 @@ public class PlayerPawn : MonoBehaviour
     private void Update()
     {
         timeManager();
+        if (isDashing)
+        {
+            doDash();
+        }
     }
 
     private void timeManager()
@@ -72,10 +69,6 @@ public class PlayerPawn : MonoBehaviour
         {
             attackTimerCurrent -= Time.deltaTime;
         }
-        if (staminaMax <= 0)
-        {
-            staminaCurrent += (Time.deltaTime * staminaRegen);
-        }
     }
 
     public void move(Vector2 movementVector)
@@ -83,7 +76,6 @@ public class PlayerPawn : MonoBehaviour
         if (!isDashing && !isDead && !isStunned)
         {
             // Think about reducing speed while carrying the tea!
-            tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
             if (movementVector.x == 0 && movementVector.y == 0)
             {
                 // Idle Animation
@@ -92,16 +84,23 @@ public class PlayerPawn : MonoBehaviour
             {
                 // Walking Animation
             }
-
-            if (movementVector.x > 0)
+            if (movementVector.x == 0 && movementVector.y != 0)
+            {
+                tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
+            }
+            else if (movementVector.x > 0)
             {
                 // Flip Right
                 tf.rotation = Quaternion.Euler(0, 0, 0);
+                tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
+                directionToDash = movementVector;
             }
             else
             {
                 // Flip Left
                 tf.rotation = Quaternion.Euler(0, 180, 0);
+                tf.Translate(new Vector2(-movementVector.x * (movementSpeed * Time.deltaTime), (movementVector.y * (movementSpeed * Time.deltaTime))));
+                directionToDash = new Vector2(-movementVector.x, movementVector.y);
             }
         }
     }
@@ -125,7 +124,7 @@ public class PlayerPawn : MonoBehaviour
         if (!isDashing && !isDead && !isStunned && !isCarryingPickup)
         {
             isDashing = true;
-            StartCoroutine(doDash(movementVector));
+            timeToDashCurrent = timeToDashMax;
         }
     }
 
@@ -133,52 +132,26 @@ public class PlayerPawn : MonoBehaviour
     {
         // takeDamage noise
         // take damage flashy
-        healthCurrent -= damageToTake;
         if (isCarryingPickup)
         {
             dropPickup();
-            isStunned = true;
-            StartCoroutine(beStunned());
-        }
-        if (healthCurrent <= 0)
-        {
-            die();
         }
     }
 
     public void dropPickup()
     {
-        // throw the gameobject randomly somewhere around the player.
-        // is carryingPickup = false;
-        // BETTER IDEA!
-        // Reset tea to middle!!
+        tf.position = myController.spawnPoint.position;
+        Destroy(pickupItem);
+        isCarryingPickup = false;
     }
 
-    public void die()
+    public void doDash()
     {
-        // death noise
-        // death animation
-        isDead = true;
-        StartCoroutine(respawnTimer());
-    }
-
-    public IEnumerator doDash(Vector2 directionToDash)
-    {
-        tf.Translate(directionToDash * (dashSpeed * Time.deltaTime));
-        yield return new WaitForSeconds(timeToDash);
-        isDashing = false;
-    }
-
-    public IEnumerator beStunned()
-    {
-        yield return new WaitForSeconds(timeToStun);
-        isStunned = false;
-    }
-
-    public IEnumerator respawnTimer()
-    {
-        yield return new WaitForSeconds(timeBeforeRespawn);
-        myController.createNewPawn();
-        Destroy(this.gameObject);
+        transform.Translate(directionToDash * dashSpeed * Time.deltaTime);
+        timeToDashCurrent -= Time.deltaTime;
+        if (timeToDashCurrent < 0)
+        {
+            isDashing = false;
+        }
     }
 }
