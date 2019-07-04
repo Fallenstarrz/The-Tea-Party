@@ -7,8 +7,11 @@ public class SpawnPointConnector : MonoBehaviour
     [SerializeField]
     private List<Transform> spawnPoints;
 
+    [SerializeField]
+    private GameObject playerController;
+
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         GameManager.instance.spawnPoints.Clear();
 
@@ -16,6 +19,8 @@ public class SpawnPointConnector : MonoBehaviour
         {
             GameManager.instance.spawnPoints.Add(spawnPoints[i]);
         }
+        GameManager.instance.playerController = playerController;
+        GameManager.instance.startGame();
     }
 
     // Update is called once per frame

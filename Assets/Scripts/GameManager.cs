@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public List<Transform> spawnPoints;
 
     public GameObject pauseMenu;
+    public GameObject playerController;
+    public int numPlayers;
 
     private void Awake()
     {
@@ -26,6 +28,11 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         } 
         #endregion
+    }
+
+    public void setNumPlayers(int newNumPlayers)
+    {
+        numPlayers = newNumPlayers;
     }
 
     public void togglePaused()
@@ -59,5 +66,31 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds (3.0f);
 
         sceneSwitcher.loadScene("MainMenuScene");
+    }
+
+    public void startGame()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            GameObject iterController = Instantiate(playerController);
+            iterController.GetComponent<PlayerController>().spawnPoint = spawnPoints[i];
+            switch (i)
+            {
+                case 0:
+                    iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player1;
+                    break;
+                case 1:
+                    iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player2;
+                    break;
+                case 2:
+                    iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player3;
+                    break;
+                case 3:
+                    iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player4;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

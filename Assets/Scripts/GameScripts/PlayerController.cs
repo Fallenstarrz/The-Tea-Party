@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
+        createNewPawn();
     }
 
     // Update is called once per frame
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.instance.togglePaused();
         }
-        if (!GameManager.instance.isPaused)
+        if (!GameManager.instance.isPaused && myPawn != null)
         {
             Vector2 myVector = new Vector2(Input.GetAxis(myControllerNumber + "_Horizontal"), Input.GetAxis(myControllerNumber + "_Vertical"));
             myPawn.move(myVector);
@@ -75,5 +76,6 @@ public class PlayerController : MonoBehaviour
     public void createNewPawn()
     {
         myPawn = Instantiate(spawnablePawn, spawnPoint).GetComponent<PlayerPawn>();
+        myPawn.myController = this;
     }
 }

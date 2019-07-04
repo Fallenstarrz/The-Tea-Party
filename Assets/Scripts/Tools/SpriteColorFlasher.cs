@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class SpriteColorFlasher : MonoBehaviour
 {
     private SpriteRenderer mySpRender;
@@ -38,9 +37,17 @@ public class SpriteColorFlasher : MonoBehaviour
     {
         if (a <= minOpacity)
         {
-            a += flashSpeed * Time.deltaTime;
+            goingUp = true;
         }
         else if (a >= maxOpacity)
+        {
+            goingUp = false;
+        }
+        if (goingUp == true)
+        {
+            a += flashSpeed * Time.deltaTime;
+        }
+        else
         {
             a -= flashSpeed * Time.deltaTime;
         }
