@@ -65,16 +65,19 @@ public class PlayerPawn : MonoBehaviour
 
     private void timeManager()
     {
-        if (attackTimerCurrent > 0)
+        if (attackTimerCurrent >= 0)
         {
             attackTimerCurrent -= Time.deltaTime;
         }
     }
 
+    bool isFacingRight = true;
     public void move(Vector2 movementVector)
     {
         if (!isDashing && !isDead && !isStunned)
         {
+            tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
+            directionToDash = movementVector;
             // Think about reducing speed while carrying the tea!
             if (movementVector.x == 0 && movementVector.y == 0)
             {
@@ -84,25 +87,24 @@ public class PlayerPawn : MonoBehaviour
             {
                 // Walking Animation
             }
-            if (movementVector.x == 0 && movementVector.y != 0)
+            if (isFacingRight == false && movementVector.x > 0)
             {
-                tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
+                flipActor();
             }
-            else if (movementVector.x > 0)
+            else if (isFacingRight == true && movementVector.x < 0)
             {
-                // Flip Right
-                tf.rotation = Quaternion.Euler(0, 0, 0);
-                tf.Translate(movementVector * (movementSpeed * Time.deltaTime));
-                directionToDash = movementVector;
+                flipActor();
             }
-            else
-            {
-                // Flip Left
-                tf.rotation = Quaternion.Euler(0, 180, 0);
-                tf.Translate(new Vector2(-movementVector.x * (movementSpeed * Time.deltaTime), (movementVector.y * (movementSpeed * Time.deltaTime))));
-                directionToDash = new Vector2(-movementVector.x, movementVector.y);
-            }
+            rb.velocity = new Vector3(0, 0, 0);
         }
+    }
+
+    private void flipActor()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 scalar = transform.localScale;
+        scalar.x *= -1;
+        transform.localScale = scalar;
     }
 
     public void attack()
@@ -111,6 +113,7 @@ public class PlayerPawn : MonoBehaviour
         {
             // attack noise
             // attack animation
+            Debug.Log("Attack Pressed");
             attackTimerCurrent = attackTimerMax;
             GameObject myAttack = Instantiate(attackObject, attackPoint);
             myAttack.GetComponent<Attack>().owner = this.gameObject;

@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour
     public playerNumber myPlayerNumber;
 
     private string myControllerNumber;
+    
+    // Set up scores
+    // if score is > 2, this player wins
+    // score UI
 
     // Use this for initialization
     void Start()

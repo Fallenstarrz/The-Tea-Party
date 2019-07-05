@@ -8,7 +8,7 @@ public class ThrowZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<PlayerPawn>().isCarryingPickup)
+        if (other.gameObject.GetComponent<PlayerPawn>().isCarryingPickup == true)
         {
             Destroy(other.gameObject.GetComponent<PlayerPawn>().pickupItem);
             other.gameObject.GetComponent<PlayerPawn>().isCarryingPickup = false;

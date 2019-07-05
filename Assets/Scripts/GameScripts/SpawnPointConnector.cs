@@ -11,7 +11,7 @@ public class SpawnPointConnector : MonoBehaviour
     private GameObject playerController;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         GameManager.instance.spawnPoints.Clear();
 
@@ -21,11 +21,5 @@ public class SpawnPointConnector : MonoBehaviour
         }
         GameManager.instance.playerController = playerController;
         GameManager.instance.startGame();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
