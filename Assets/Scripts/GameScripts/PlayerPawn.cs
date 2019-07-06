@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerPawn : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerPawn : MonoBehaviour
     private AudioSource soundMaker;
     [HideInInspector]
     public PlayerController myController;
+    public Image fillyBar;
 
     public GameObject attackObject;
     public Transform attackPoint;
@@ -156,5 +158,10 @@ public class PlayerPawn : MonoBehaviour
         {
             isDashing = false;
         }
+    }
+
+    public void doPauseGame()
+    {
+        GameManager.instance.togglePaused();
     }
 }

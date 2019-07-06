@@ -27,4 +27,9 @@ public class SceneSwitcher : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void resetGameTime()
+    {
+        GameManager.instance.togglePaused();
+    }
 }

@@ -9,11 +9,15 @@ public class GameManager : MonoBehaviour
     public SceneSwitcher sceneSwitcher;
     public bool isPaused;
 
-    public List<Transform> spawnPoints;
+    public List<Transform> spawnPoints = new List<Transform>();
 
     public GameObject pauseMenu;
     public GameObject playerController;
     public int numPlayers;
+
+    public bool isGameOver;
+
+    public GameObject victoryText;
 
     private void Awake()
     {
@@ -64,7 +68,7 @@ public class GameManager : MonoBehaviour
     IEnumerator resetGameDefaults()
     {
         yield return new WaitForSeconds (3.0f);
-
+        isGameOver = false;
         sceneSwitcher.loadScene("MainMenuScene");
     }
 
@@ -78,15 +82,19 @@ public class GameManager : MonoBehaviour
             {
                 case 0:
                     iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player1;
+                    iterController.GetComponent<PlayerController>().BeginPlay();
                     break;
                 case 1:
                     iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player2;
+                    iterController.GetComponent<PlayerController>().BeginPlay();
                     break;
                 case 2:
                     iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player3;
+                    iterController.GetComponent<PlayerController>().BeginPlay();
                     break;
                 case 3:
                     iterController.GetComponent<PlayerController>().myPlayerNumber = PlayerController.playerNumber.player4;
+                    iterController.GetComponent<PlayerController>().BeginPlay();
                     break;
                 default:
                     break;

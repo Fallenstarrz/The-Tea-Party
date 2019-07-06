@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject spawnablePawn;
-    public PlayerPawn myPawn;
+    private PlayerPawn myPawn;
     public Transform spawnPoint;
 
+    public Image myScoreArea;
+
+    public int myScore;
+
+    private string myControllerNumber;
     public enum playerNumber
     {
         player1,
@@ -16,15 +22,13 @@ public class PlayerController : MonoBehaviour
         player4
     }
     public playerNumber myPlayerNumber;
-
-    private string myControllerNumber;
     
     // Set up scores
     // if score is > 2, this player wins
     // score UI
 
     // Use this for initialization
-    void Start()
+    public void BeginPlay()
     {
         switch (myPlayerNumber)
         {
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         createNewPawn();
+        myScoreArea = myPawn.fillyBar;
     }
 
     // Update is called once per frame
@@ -58,10 +63,6 @@ public class PlayerController : MonoBehaviour
 
     private void inputHandler()
     {
-        if (Input.GetButtonDown("PauseButton"))
-        {
-            GameManager.instance.togglePaused();
-        }
         if (!GameManager.instance.isPaused && myPawn != null)
         {
             Vector2 myVector = new Vector2(Input.GetAxis(myControllerNumber + "_Horizontal"), Input.GetAxis(myControllerNumber + "_Vertical"));
@@ -81,5 +82,26 @@ public class PlayerController : MonoBehaviour
     {
         myPawn = Instantiate(spawnablePawn, spawnPoint).GetComponent<PlayerPawn>();
         myPawn.myController = this;
+    }
+
+    public void incrementScore()
+    {
+        if (GameManager.instance.isGameOver == false)
+        {
+            myScore++;
+            checkVictory();
+            myScoreArea.fillAmount = (float)myScore / 3;
+            Debug.Log(myScoreArea.fillAmount);
+        }
+    }
+
+    public void checkVictory()
+    {
+        if (myScore >= 3)
+        {
+            GameManager.instance.victoryText.GetComponentInChildren<Text>().text = "Game Over " + myPlayerNumber.ToString() + " Wins";
+            GameManager.instance.victoryText.SetActive(true);
+            GameManager.instance.resetGame();
+        }
     }
 }
