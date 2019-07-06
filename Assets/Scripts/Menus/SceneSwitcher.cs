@@ -32,4 +32,9 @@ public class SceneSwitcher : MonoBehaviour
     {
         GameManager.instance.togglePaused();
     }
+
+    public void settupPlayerNumber(int numPlayers)
+    {
+        GameManager.instance.setNumPlayers(numPlayers);
+    }
 }
